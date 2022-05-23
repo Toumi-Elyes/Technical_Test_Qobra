@@ -160,4 +160,3 @@ if __name__ == '__main__':
     commission = Commission("data.json")
     commission.getData(sys.argv[1])
     commission.computeMonthCommissions()
-    exit(0)
