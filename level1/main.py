@@ -72,7 +72,7 @@ def commission_calculator(filepath: str):
 
 if __name__ == '__main__':
     try:
-        commission_calculator(sys.argv[1])
+        commission_calculator("data/input.json")
     except Exception as e:
         print("Error:", e)
         exit(1)

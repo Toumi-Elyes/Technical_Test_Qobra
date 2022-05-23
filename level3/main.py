@@ -158,5 +158,5 @@ class Commission:
 
 if __name__ == '__main__':
     commission = Commission("data.json")
-    commission.getData(sys.argv[1])
+    commission.getData("data/input.json")
     commission.computeMonthCommissions()

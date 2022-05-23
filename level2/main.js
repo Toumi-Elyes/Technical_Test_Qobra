@@ -1,8 +1,6 @@
-const process = require('process');
 const fs = require("fs");
 const { exit } = require('process');
 
-const args = process.argv;
 const computeCommission = (objective, deals) => {
     /*
     Compute commissions depending on user objective and deals closed.
@@ -64,4 +62,4 @@ const commissionCalculator = (filepath) => {
     })
     fs.writeFile('./data.json', JSON.stringify({commissions}, null, 2), err => {});
 };
-commissionCalculator(args[2]);
+commissionCalculator("data/input.json");
