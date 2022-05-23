@@ -9,7 +9,7 @@ const computeCommission = (objective, deals) => {
 
     :param objective: user's month's objective.
     :param deals: deal's list that the user closed.
-    :return: No return value.
+    :return: commissions computed.
     */
     const DealsTotal = deals.map(deal => deal.amount).reduce((a, b) => a + b, 0);
     let commission = 0;

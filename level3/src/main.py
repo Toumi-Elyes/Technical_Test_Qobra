@@ -8,30 +8,66 @@ class Commission:
         self.data = {}
 
     def getData(self, filepath : str):
+        '''
+        Open json file and set class variable with the content.
+
+        :param self: class member functions and variables.
+        :param filepath: name and path of the file.
+        :return: nothing.
+        '''
+
         self.data = open_json_file(filepath)
 
-    def getDealsFromId(self, userId : int):
+    def getDealsFromId(self, userId : int) -> dict:
+        '''
+        Get all deals for one user.
+
+        :param self: class member functions and variables.
+        :param userId: id of the user.
+        :return: dict with the user and all deals that he closed.
+        '''
         userDeals = []
         for deal in self.data['deals']:
             if deal['user'] == userId:
                 userDeals.append(deal)
         return {"userId" : userId, "deals": userDeals}
 
-    def getAllDeals(self):
+    def getAllDeals(self) -> list[dict]:
+        '''
+        Get all deals for one user.
+
+        :param self: class member functions and variables.
+        :param: none.
+        :return: list of dict with users and deals.
+        '''
         deals = []
 
         for user in self.data['users']:
             deals.append(self.getDealsFromId(user['id']))
         return deals
 
-    def getPaymentMonths(self, userDeals : dict):
+    def getPaymentMonths(self, userDeals : dict) -> list[str]:
+        '''
+        Get all payment months for list of deals.
+
+        :param self: class member functions and variables.
+        :param userDeals: list of deals of one user.
+        :return: list with all the payment months.
+        '''
 
         months = []
         for deal in userDeals:
             months.append(deal['payment_date'][0:-3])
         return list(dict.fromkeys(months))
 
-    def getDealFromMonths(self):
+    def getDealFromMonths(self) -> list[dict]:
+        '''
+        Get all payment months for list of deals.
+
+        :param self: class member functions and variables.
+        :param userDeals: list of deals of one user.
+        :return: list with all the payment months.
+        '''
         UsersDeals = self.getAllDeals()
         MonthlyDeals = []
         dealsMonth = []
@@ -49,7 +85,16 @@ class Commission:
             d=[]
         return data
 
-    def computeCommission(self, value: int, objective : int):
+    def computeCommission(self, value: int, objective : int) -> float:
+        '''
+        Compute commissions depending on user objective and deals closed.
+
+        :param self: class member functions and variables.
+        :param value: total amount of money that user need to pay;
+        :param objective: user's month's objective.
+        :return: commission computed.
+        '''
+
         commission = 0
         if  value <= objective:
             if value <= objective / 2:
@@ -63,13 +108,26 @@ class Commission:
             commission += (value - objective) * 0.15
         return commission
 
-    def getObjectiveFromId(self, userId: int):
+    def getObjectiveFromId(self, userId: int) -> int:
+        '''
+        get Objective from user's id.
+
+        :param self: class member functions and variables.
+        :param userId: id of the user.
+        :return: objective of the user.
+        '''
         for user in self.data["users"]:
             if userId == user['id']:
                 return user['objective']
         return 0
 
     def computeMonthCommissions(self):
+        '''
+        compute commissions of user deals depending on payment date.
+
+        :param self: class member functions and variables.
+        :return: nothing.
+        '''
         dealsMonth = self.getDealFromMonths()
         total_in_month = 0
         objective = 0
@@ -97,8 +155,9 @@ class Commission:
             dealsData.append({"id": id, "commission": commission})
         jsonOutput["deals"] = dealsData
         write_json_file(self.writeFile, jsonOutput, 2)
+
 if __name__ == '__main__':
-    commission = Commission("new.json")
+    commission = Commission("data.json")
     commission.getData(sys.argv[1])
     commission.computeMonthCommissions()
-    exit (0)
+    exit(0)
